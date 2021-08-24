@@ -1,7 +1,6 @@
 const pouchdb = require('pouchdb')
 
 async function go() {
-  console.log(process.argv)
   const DOC_ID = process.argv[2]
   const OLD_STUDY_ID = process.argv[3]
   const NEW_STUDY_ID = process.argv[4]
@@ -41,8 +40,8 @@ async function go() {
             const formResponseDoc = await db.get(formResponseId)
             let changed = false
             for (let item of formResponseDoc.items) {
-              let form_input = item.inputs.find(input => input.value === OLD_STUDY_ID)
-              if (form_input) {
+              let form_inputs = item.inputs.filter(input => input.value === OLD_STUDY_ID)
+              for (let form_input of form_inputs) {
                 form_input.value = NEW_STUDY_ID
                 console.log(`Changed ${form_input.name} to ${form_input.value}`)
                 changed = true
